@@ -101,10 +101,25 @@ export class UniversalUnusedFinder {
   private buildFileGraph(): Set<string> {
     const usedFiles = new Set<string>();
 
-    // Next.js: pages/ and app/ are always used (framework routing)
+    // Next.js: route files are always used (framework auto-routing)
     if (this.projectType === 'nextjs') {
-      for (const key of this.allFiles.keys()) {
-        if (key.startsWith('pages/') || key.startsWith('app/')) usedFiles.add(key);
+      const NEXTJS_ROUTE_FILES = new Set([
+        'page.js', 'page.jsx', 'page.ts', 'page.tsx',
+        'layout.js', 'layout.jsx', 'layout.ts', 'layout.tsx',
+        'loading.js', 'loading.jsx', 'loading.ts', 'loading.tsx',
+        'error.js', 'error.jsx', 'error.ts', 'error.tsx',
+        'not-found.js', 'not-found.jsx', 'not-found.ts', 'not-found.tsx',
+        'template.js', 'template.jsx', 'template.ts', 'template.tsx',
+        'route.js', 'route.ts',
+        'middleware.js', 'middleware.ts',
+      ]);
+      for (const [key, fileInfo] of this.allFiles.entries()) {
+        const inRouteDir =
+          key.startsWith('pages/') || key.startsWith('app/') ||
+          key.startsWith('src/pages/') || key.startsWith('src/app/');
+        if (inRouteDir || NEXTJS_ROUTE_FILES.has(fileInfo.fileName)) {
+          usedFiles.add(key);
+        }
       }
     }
 

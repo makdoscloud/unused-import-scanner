@@ -2,6 +2,37 @@ import fs from 'fs';
 import path from 'path';
 import type { ProjectType, ProjectConfig, TsJsConfig } from './types';
 
+function stripJsonComments(content: string): string {
+  let result = '';
+  let i = 0;
+  const len = content.length;
+  while (i < len) {
+    if (content[i] === '"') {
+      result += content[i++];
+      while (i < len) {
+        if (content[i] === '\\') {
+          result += content[i++];
+          if (i < len) result += content[i++];
+        } else if (content[i] === '"') {
+          result += content[i++];
+          break;
+        } else {
+          result += content[i++];
+        }
+      }
+    } else if (content[i] === '/' && content[i + 1] === '/') {
+      while (i < len && content[i] !== '\n') i++;
+    } else if (content[i] === '/' && content[i + 1] === '*') {
+      i += 2;
+      while (i < len && !(content[i] === '*' && content[i + 1] === '/')) i++;
+      i += 2;
+    } else {
+      result += content[i++];
+    }
+  }
+  return result;
+}
+
 export function detectProjectType(projectRoot: string): ProjectType {
   const packageJsonPath = path.join(projectRoot, 'package.json');
   try {
@@ -40,13 +71,16 @@ const PROJECT_CONFIGS: Record<ProjectType, ProjectConfig> = {
       'hooks', 'contexts', 'store', 'src', 'api', 'shared',
     ],
     excludeFiles: [
-      'next.config.js', '_app.js', '_document.js', '_app.tsx', '_document.tsx',
-      'layout.js', 'layout.tsx', 'page.js', 'page.tsx',
+      'next.config.js', 'next.config.ts',
+      '_app.js', '_document.js', '_app.tsx', '_document.tsx',
     ],
     mainFiles: [
       'pages/_app.js', 'pages/_app.tsx',
       'app/layout.js', 'app/layout.tsx',
       'src/pages/_app.js', 'src/pages/_app.tsx',
+      'src/app/layout.js', 'src/app/layout.tsx',
+      'middleware.js', 'middleware.ts',
+      'src/middleware.js', 'src/middleware.ts',
     ],
   },
   react: {
@@ -82,10 +116,9 @@ export function readTsJsConfig(projectRoot: string): TsJsConfig {
   if (!filePath) return { baseUrl: null, paths: {} };
 
   try {
-    // Strip comments and trailing commas (tsconfig is JSON5-ish)
-    let content = fs.readFileSync(filePath, 'utf8');
-    content = content.replace(/\/\/[^\n]*/g, '');           // single-line comments
-    content = content.replace(/\/\*[\s\S]*?\*\//g, '');     // block comments
+    // Strip comments and trailing commas (tsconfig is JSON5-ish).
+    // Must be string-aware to avoid mangling values like "@/*" or "https://...".
+    let content = stripJsonComments(fs.readFileSync(filePath, 'utf8'));
     content = content.replace(/,(\s*[}\]])/g, '$1');        // trailing commas
 
     const cfg = JSON.parse(content) as {

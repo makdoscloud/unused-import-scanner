@@ -1,6 +1,6 @@
 {
   "name": "unused-import-scanner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Find unused files and imports in JavaScript/TypeScript projects. Supports React, React Native, Next.js, and generic JS projects.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
