@@ -1,0 +1,44 @@
+{
+  "name": "unused-import-scanner",
+  "version": "1.0.0",
+  "description": "Find unused files and imports in JavaScript/TypeScript projects. Supports React, React Native, Next.js, and generic JS projects.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "unusedfinder": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "unused",
+    "imports",
+    "files",
+    "dead-code",
+    "react",
+    "react-native",
+    "nextjs",
+    "typescript",
+    "javascript",
+    "linter",
+    "cli"
+  ],
+  "author": "Berke Ozenses",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MakdosBilisim/unused-import-scanner.git"
+  }
+}

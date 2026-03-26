@@ -1,0 +1,4 @@
+src/
+tsconfig.json
+*.js.map
+universal-unused-finder.js
