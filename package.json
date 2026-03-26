@@ -28,7 +28,16 @@
     "linter",
     "cli"
   ],
-  "author": "Berke Ozenses",
+  "author": {
+    "name": "Berke Özenses",
+    "url": "https://github.com/berkeozenses"
+  },
+  "contributors": [
+    {
+      "name": "Utku Sezici",
+      "url": "https://github.com/utkusezici"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.0.0",

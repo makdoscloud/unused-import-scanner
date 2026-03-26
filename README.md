@@ -2,6 +2,8 @@
 
 A zero-dependency CLI tool that finds unused files and unused imports in JavaScript/TypeScript projects. Supports React, React Native, Next.js, and generic JS/TS projects.
 
+Built by [Makdos](https://makdos.com/en/) — software products crafted for modern teams.
+
 ## Features
 
 - Detects **unused files** — source files that are never imported anywhere
@@ -209,6 +211,13 @@ Files containing `.test.`, `.spec.`, `_test.`, `_spec.` in their name are skippe
 - Node.js >= 16.0.0
 
 ---
+
+## Authors
+
+- **Berke Özenses** — [@berkeozenses](https://github.com/berkeozenses)
+- **Utku Sezici** — [@utkusezici](https://github.com/utkusezici)
+
+Made at [Makdos](https://makdos.com/en/)
 
 ## License
 
